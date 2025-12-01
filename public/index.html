@@ -23,48 +23,67 @@
 				</div>
 
 				<form class="login100-form validate-form">
-					<span class="login100-form-title">
-						Whatsapp HSM
-					</span>
-
-					<div class="wrap-input100 validate-input" data-validate="O template é obrigatório">
-						<input class="input100" type="text" id="templateCode" placeholder="código do template*">
-						<span class="focus-input100"></span>
-						<span class="symbol-input100">
-							<i class="fa fa-whatsapp" aria-hidden="true"></i>
+					<div class="form-header">
+						<img src="images/logo_bow-e1.png" alt="Bow-e Logo" class="form-logo">
+						<span class="login100-form-title">
+							Configuração do Whatsapp
 						</span>
 					</div>
 
-					<div class="wrap-input100 validate-input" data-validate="O campo do telefone é obrigatório">
-						<input class="input100" type="text" id="phoneFieldName" placeholder="campo de telefone*">
-						<span class="focus-input100"></span>
-						<span class="symbol-input100">
-							<i class="fa fa-phone" aria-hidden="true"></i>
-						</span>
+					<!-- Grid de 3 colunas: Template, Phone, Account -->
+					<div class="form-row-three">
+						<div class="wrap-input100 validate-input" data-validate="O template é obrigatório">
+							<input class="input100" type="text" id="templateCode" placeholder="Nome do template*">
+							<span class="focus-input100"></span>
+						</div>
+
+						<div class="wrap-input100 validate-input" data-validate="O campo do telefone é obrigatório">
+							<input class="input100" type="text" id="phoneFieldName" placeholder="Campo de telefone*">
+							<span class="focus-input100"></span>
+						</div>
+
+						<div class="wrap-input100 validate-input" data-validate="A conta de envio é obrigatória">
+							<select class="input100" id="whatsappAccount">
+								<option value="">Conta de envio*</option>
+								<option value="107">Bow-e (Cloud Humans)</option>
+							</select>
+							<span class="focus-input100"></span>
+						</div>
 					</div>
 
-					<div class="wrap-input100">
-						<input class="input100" type="text" id="parameterList" placeholder="parâmetros">
-						<span class="focus-input100"></span>
-						<span class="symbol-input100">
-							<i class="fa fa-paragraph" aria-hidden="true"></i>
-						</span>
+					<!-- Seção de Cabeçalho -->
+					<div class="form-section-header">
+						<h3>Cabeçalho</h3>
+						<div class="wrap-input100">
+							<input class="input100" type="text" id="headerField" placeholder="Nome da variável do cabeçalho" data-param-key="header_attachment">
+							<span class="focus-input100"></span>
+						</div>
 					</div>
 
-					<div class="wrap-input100 validate-input" data-validate="A conta de envio é obrigatória">
-						<select class="input100" id="whatsappAccount">
-							<option class="focus-input100">conta de envio*</option>
-							<option class="focus-input100" value="107">Bow-e (Cloud Humans)</option>
-							<!-- <option class="focus-input100" value="3">XP Acelerando (Blip)</option> -->
-						</select>
-						<span class="focus-input100"></span>
-						<span class="symbol-input100">
-							<i class="fa fa-paper-plane" aria-hidden="true"></i>
-						</span>
+					<!-- Seção de Parâmetros Dinâmicos -->
+					<div class="parameters-section">
+						<label class="parameters-label">Parâmetros </label>
+						<div id="parametersContainer">
+							<!-- Parâmetros serão adicionados dinamicamente aqui -->
+						</div>
+						<button type="button" id="btnAddParameter" class="btn-add-param" title="Adicionar parâmetro">+</button>
+					</div>
+
+					<!-- Seção de Botões -->
+					<div class="footer-section">
+						<label>Botões</label>
+						<div class="wrap-input100">
+							<input class="input100" type="text" id="footerField1" placeholder="Nome da variável do botão" data-param-key="button_param_0">
+							<span class="focus-input100"></span>
+						</div>
+						<div class="wrap-input100">
+							<input class="input100" type="text" id="footerField2" placeholder="Nome da variável do botão" data-param-key="button_param_1">
+							<span class="focus-input100"></span>
+						</div>
 					</div>
 
 					<div class="container-login100-form-btn">
-						<button id="toggleActive" class="login100-form-btn">
+						<button type="button" id="toggleActive" class="login100-form-btn">
 							Ativar
 						</button>
 					</div>
