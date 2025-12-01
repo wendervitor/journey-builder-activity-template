@@ -153,11 +153,14 @@ define(function (require) {
             "parameters": parameters,
             "account": whatsappAccount
         }];
-        console.log("in the save option "+ payload);
+        
+        payload['metaData'] = payload['metaData'] || {};
         payload['metaData'].isConfigured = true;
+        console.log("Payload on SAVE function:");
+        console.log(JSON.stringify(payload));
 
         // console.log('payload', JSON.stringify(payload));
-        console.log("Payload on SAVE function: "+JSON.stringify(payload));
+        
 
         connection.trigger('updateActivity', payload);
     }
