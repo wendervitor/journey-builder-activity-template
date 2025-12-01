@@ -1,104 +1,159 @@
-define([
-    'postmonger'
-], function (
-    Postmonger
-) {
-    'use strict';
+'use strict';
 
+define(function (require) {
+    var Postmonger = require('postmonger');
     var connection = new Postmonger.Session();
-    var authTokens = {};
+
     var payload = {};
+    var authTokens = {};
+
+    var eventDefinitionKey = null;
+    var templateCode = null;
+    var phoneFieldName = null;
+    var parameterList = null;
+    var whatsappAccount = null;
+
     $(window).ready(onRender);
 
     connection.on('initActivity', initialize);
     connection.on('requestedTokens', onGetTokens);
     connection.on('requestedEndpoints', onGetEndpoints);
-    connection.on('requestedInteraction', onRequestedInteraction);
-    connection.on('requestedTriggerEventDefinition', onRequestedTriggerEventDefinition);
-    connection.on('requestedDataSources', onRequestedDataSources);
-
+    connection.on('requestedInteraction', requestedInteractionHandler);
     connection.on('clickedNext', save);
-   
-    function onRender() {
-        // JB will respond the first time 'ready' is called with 'initActivity'
-        connection.trigger('ready');
 
+    /* [ Form Validate ] ================================================================== */
+
+    $('.validate-form .input100').each(function () {
+        $(this).focus(function () {
+            hideValidate(this);
+        });
+    });
+
+    function showValidate(input) {
+        var thisAlert = $(input).parent();
+        $(thisAlert).addClass('alert-validate');
+    }
+
+    function hideValidate(input) {
+        var thisAlert = $(input).parent();
+        $(thisAlert).removeClass('alert-validate');
+    }
+
+    function validate_field(input) {
+        if ($(input).attr('type') == 'email' || $(input).attr('name') == 'email') {
+            if ($(input).val().trim().match(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{1,5}|[0-9]{1,3})(\]?)$/) == null) {
+                return false;
+            }
+        }
+        else {
+            if ($(input).val().trim() == '' || $(input).val().trim() == 'conta de envio*') {
+                return false;
+            }
+        }
+    }
+
+    function validate() {
+        var input = $('.validate-input .input100');
+        var check = true;
+        for (var i = 0; i < input.length; i++) {
+            if (validate_field(input[i]) == false) {
+                showValidate(input[i]);
+                check = false;
+            }
+        }
+        return check;
+    }
+
+    /* ![ Form Validate ] ================================================================== */
+
+    function onRender() {
+        connection.trigger('ready');
         connection.trigger('requestTokens');
         connection.trigger('requestEndpoints');
         connection.trigger('requestInteraction');
-        connection.trigger('requestTriggerEventDefinition');
-        connection.trigger('requestDataSources');  
 
-    }
+        $('#toggleActive').click(function (evt) {
+            evt.preventDefault();
 
-    function onRequestedDataSources(dataSources){
-        console.log('*** requestedDataSources ***');
-        console.log(dataSources);
-    }
+            if (validate()) {
+                document.getElementById('templateCode').disabled = true;
+                templateCode = $('#templateCode').val();
 
-    function onRequestedInteraction (interaction) {    
-        console.log('*** requestedInteraction ***');
-        console.log(interaction);
-     }
+                document.getElementById('phoneFieldName').disabled = true;
+                phoneFieldName = $('#phoneFieldName').val();
 
-     function onRequestedTriggerEventDefinition(eventDefinitionModel) {
-        console.log('*** requestedTriggerEventDefinition ***');
-        console.log(eventDefinitionModel);
+                document.getElementById('parameterList').disabled = true;
+                parameterList = $('#parameterList').val();
+
+                document.getElementById('whatsappAccount').disabled = true;
+                whatsappAccount = $('#whatsappAccount').val();
+
+                document.getElementById('toggleActive').disabled = true;
+                document.getElementById('toggleActive').innerHTML = "Ativado";
+            }
+        });
     }
 
     function initialize(data) {
-        console.log(data);
         if (data) {
             payload = data;
         }
-        
-        var hasInArguments = Boolean(
-            payload['arguments'] &&
-            payload['arguments'].execute &&
-            payload['arguments'].execute.inArguments &&
-            payload['arguments'].execute.inArguments.length > 0
-        );
 
-        var inArguments = hasInArguments ? payload['arguments'].execute.inArguments : {};
+        templateCode = payload['arguments'].templateCode;
 
-        console.log(inArguments);
+        if (templateCode) {
+            document.getElementById('templateCode').disabled = true;
+            document.getElementById('templateCode').value = templateCode;
 
-        $.each(inArguments, function (index, inArgument) {
-            $.each(inArgument, function (key, val) {
-                
-              
-            });
-        });
+            document.getElementById('phoneFieldName').disabled = true;
+            document.getElementById('phoneFieldName').value = templateCode;
 
-        connection.trigger('updateButton', {
-            button: 'next',
-            text: 'done',
-            visible: true
-        });
+            document.getElementById('parameterList').disabled = true;
+            document.getElementById('parameterList').value = templateCode;
+
+            document.getElementById('whatsappAccount').disabled = true;
+            document.getElementById('whatsappAccount').value = templateCode;
+
+            document.getElementById('toggleActive').disabled = true;
+            document.getElementById('toggleActive').innerHTML = "Ativado";
+        }
     }
 
     function onGetTokens(tokens) {
-        console.log(tokens);
+        // console.log(tokens);
         authTokens = tokens;
     }
 
     function onGetEndpoints(endpoints) {
-        console.log(endpoints);
+        // console.log(endpoints);
+    }
+
+    function requestedInteractionHandler(settings) {
+        try {
+            eventDefinitionKey = settings.triggers[0].metaData.eventDefinitionKey;
+            document.getElementById('select-entryevent-defkey').value = eventDefinitionKey;
+        } catch (err) {
+            console.error(err);
+        }
     }
 
     function save() {
-        var postcardURLValue = $('#postcard-url').val();
-        var postcardTextValue = $('#postcard-text').val();
+        var parameters = parameterList.split(';');
+        parameters = parameters.map(parameterName => `{{Event.${eventDefinitionKey}.\"${parameterName}\"}}`);
 
         payload['arguments'].execute.inArguments = [{
-            "tokens": authTokens
+            "tokens": authTokens,
+            "templateName": templateCode,
+            "contactIdentifier": "{{Contact.Key}}",
+            "phoneNumber": `{{Event.${eventDefinitionKey}.\"${phoneFieldName}\"}}`,
+            "parameters": parameters,
+            "account": whatsappAccount
         }];
-        
+
         payload['metaData'].isConfigured = true;
 
-        console.log(payload);
+        // console.log('payload', JSON.stringify(payload));
+
         connection.trigger('updateActivity', payload);
     }
-
-
 });

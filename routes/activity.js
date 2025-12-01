@@ -1,11 +1,9 @@
 'use strict';
-var util = require('util');
 
-// Deps
 const Path = require('path');
 const JWT = require(Path.join(__dirname, '..', 'lib', 'jwtDecoder.js'));
-var util = require('util');
-var http = require('https');
+const util = require('util');
+const axios = require('axios');
 
 exports.logExecuteData = [];
 
@@ -29,8 +27,9 @@ function logData(req) {
         secure: req.secure,
         originalUrl: req.originalUrl
     });
+    
     console.log("body: " + util.inspect(req.body));
-    console.log("headers: " + req.headers);
+    console.log("headers: " + util.inspect(req.headers));
     console.log("trailers: " + req.trailers);
     console.log("method: " + req.method);
     console.log("url: " + req.url);
@@ -48,23 +47,15 @@ function logData(req) {
     console.log("originalUrl: " + req.originalUrl);
 }
 
-/*
- * POST Handler for / route of Activity (this is the edit route).
- */
 exports.edit = function (req, res) {
-    // Data from the req and put it in an array accessible to the main app.
-    //console.log( req.body );
-    logData(req);
+    console.log('edit request');
+    // logData(req);
     res.send(200, 'Edit');
 };
 
-/*
- * POST Handler for /save/ route of Activity.
- */
 exports.save = function (req, res) {
-    // Data from the req and put it in an array accessible to the main app.
-    //console.log( req.body );
-    logData(req);
+    console.log('save request');
+    // logData(req);
     res.send(200, 'Save');
 };
 
@@ -72,22 +63,54 @@ exports.save = function (req, res) {
  * POST Handler for /execute/ route of Activity.
  */
 exports.execute = function (req, res) {
-
-    // example on how to decode JWT
+    // logData(req);
     JWT(req.body, process.env.jwtSecret, (err, decoded) => {
-
-        // verification error -> unauthorized request
         if (err) {
             console.error(err);
             return res.status(401).end();
         }
 
+        // console.log('buffer hex', req.body.toString('hex'));
+
         if (decoded && decoded.inArguments && decoded.inArguments.length > 0) {
-            
-            // decoded in arguments
             var decodedArgs = decoded.inArguments[0];
-            
-            logData(req);
+            // console.log('inArguments', JSON.stringify(decoded.inArguments));
+            // console.log('decodedArgs', JSON.stringify(decodedArgs));
+
+            const templateName = decodedArgs['templateName'];
+            const phoneNumber = decodedArgs['phoneNumber'];
+            const parameters = decodedArgs['parameters'];
+            const inboxId = decodedArgs['account'];
+            const account = '10'
+
+
+            console.log('templateName', templateName);
+            console.log('phoneNumber', phoneNumber);
+            console.log('parameters', parameters);
+            console.log('inboxId', inboxId);
+            console.log('account', account);
+
+            const headers = {
+                'Content-Type': 'application/json',
+                'api_access_token': `${process.env.CH_AUTHORIZATION_KEY}`
+            }
+            const guid_id = uuidv4();
+            const url = 'https://cloudchat.cloudhumans.com/api/v1/accounts/'+ account + '/conversations/create_proactive_whatsapp_conversation';
+
+            const post_save = {
+                "inbox_id": inboxId,
+                "phone_number": phoneNumber,
+                "template_name": templateName,
+                ...parameters
+            }
+
+            console.log('post_save', JSON.stringify(post_save));
+            axios.post(url, post_save, { headers: headers }).then((res) => {
+                console.log(`Success send whatsapp to ${phoneNumber}`);
+            }).catch((err) => {
+                console.error(`ERROR send whatsapp to ${phoneNumber}: ${err}`)
+            })
+
             res.send(200, 'Execute');
         } else {
             console.error('inArguments invalid.');
@@ -97,22 +120,21 @@ exports.execute = function (req, res) {
 };
 
 
-/*
- * POST Handler for /publish/ route of Activity.
- */
 exports.publish = function (req, res) {
-    // Data from the req and put it in an array accessible to the main app.
-    //console.log( req.body );
-    logData(req);
+    console.log('publish request');
+    // logData(req);
     res.send(200, 'Publish');
 };
 
-/*
- * POST Handler for /validate/ route of Activity.
- */
 exports.validate = function (req, res) {
-    // Data from the req and put it in an array accessible to the main app.
-    //console.log( req.body );
-    logData(req);
+    console.log('validate request');
+    // logData(req);
     res.send(200, 'Validate');
 };
+
+function uuidv4() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+}

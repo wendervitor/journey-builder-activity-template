@@ -1,44 +1,88 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 
 <head>
-    <title></title>
-    <meta charset="utf-8" />
-    <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="vendor/salesforce-lightning-design-system/styles/salesforce-lightning-design-system.css">
-    <link rel="stylesheet" href="css/styles.css">
-    <script type="text/javascript" src="//code.jquery.com/git/jquery-git.min.js"></script>
-    <script type="text/javascript" src="js/require.js"></script>
-    <script type="text/javascript">
-        (function () {
-            var config = {
-                baseUrl: 'js'
-            };
+	<title>Salesforce Whatsapp Component</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-            var dependencies = [
-                'customActivity'
-            ];
+	<link rel="icon" type="image/png" href="images/icons/favicon.ico" />
+	<link rel="stylesheet" type="text/css" href="css/util.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
 
-            require(config, dependencies);
-        })();
-    </script>
+	<script data-main="js/main.js" type="text/javascript" src="js/require.js"></script>
 </head>
 
 <body>
-    <div id="step1" class="step">
-        <div class="slds-grid">
 
-            <main class="slds-col slds-size--1-of-3 slds-p-horizontal--small">
-              <h1>Welcome to your activity!</h1>
+	<div class="limiter">
+		<div class="container-login100">
+			<div class="wrap-login100">
+				<div class="login100-pic js-tilt" data-tilt>
+					<img src="images/logo_bow-e1.png" alt="IMG">
+				</div>
 
-            </main>
-           
-            
+				<form class="login100-form validate-form">
+					<span class="login100-form-title">
+						Whatsapp HSM
+					</span>
 
-        </div>
+					<div class="wrap-input100 validate-input" data-validate="O template é obrigatório">
+						<input class="input100" type="text" id="templateCode" placeholder="código do template*">
+						<span class="focus-input100"></span>
+						<span class="symbol-input100">
+							<i class="fa fa-whatsapp" aria-hidden="true"></i>
+						</span>
+					</div>
 
-    </div>
+					<div class="wrap-input100 validate-input" data-validate="O campo do telefone é obrigatório">
+						<input class="input100" type="text" id="phoneFieldName" placeholder="campo de telefone*">
+						<span class="focus-input100"></span>
+						<span class="symbol-input100">
+							<i class="fa fa-phone" aria-hidden="true"></i>
+						</span>
+					</div>
+
+					<div class="wrap-input100">
+						<input class="input100" type="text" id="parameterList" placeholder="parâmetros">
+						<span class="focus-input100"></span>
+						<span class="symbol-input100">
+							<i class="fa fa-paragraph" aria-hidden="true"></i>
+						</span>
+					</div>
+
+					<div class="wrap-input100 validate-input" data-validate="A conta de envio é obrigatória">
+						<select class="input100" id="whatsappAccount">
+							<option class="focus-input100">conta de envio*</option>
+							<option class="focus-input100" value="107">Bow-e (Cloud Humans)</option>
+							<!-- <option class="focus-input100" value="3">XP Acelerando (Blip)</option> -->
+						</select>
+						<span class="focus-input100"></span>
+						<span class="symbol-input100">
+							<i class="fa fa-paper-plane" aria-hidden="true"></i>
+						</span>
+					</div>
+
+					<div class="container-login100-form-btn">
+						<button id="toggleActive" class="login100-form-btn">
+							Ativar
+						</button>
+					</div>
+
+					<div class="text-center p-t-136">
+						<a class="txt2" href="#" target="_blank">
+							Novo por aqui? Visite nossa Wiki.
+							<i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
+						</a>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+
 </body>
 
 </html>

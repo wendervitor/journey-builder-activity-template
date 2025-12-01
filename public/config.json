@@ -7,11 +7,14 @@
     },
     "type": "REST",
     "lang": {
-        "en-US": {
-            "name": "Template",
-          "description": "A Template for a custom Journey Builder activity",
-          "step1Label": "Configure Activity"
-        }
+      "en-US": {
+        "name": "Send Whatsapp HSM DEV",
+        "description": "HSM template submission via WhatsApp."
+      },
+      "pt-BR": {
+        "name": "Send Whatsapp HSM DEV",
+        "description": "Envio de template via WhatsApp."
+      }
     },
     "arguments": {
         "execute": {
@@ -49,13 +52,13 @@
       }
     },
     "wizardSteps": [
-        { "label": "Configure Activity", "key": "step1" }
+        { "label": "Configure o template", "key": "step1" }
     ],
     "userInterfaces": {
         "configModal": {
-            "height": 400,
-            "width": 1000,
-          "fullscreen": false
+            "height": 200,
+            "width": 300,
+          "fullscreen": true
         }
     },
     "schema": {
