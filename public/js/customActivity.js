@@ -132,7 +132,6 @@ define(function (require) {
     function requestedInteractionHandler(settings) {
         try {
             console.log(settings);
-            console.log(settings.entryEventDefinitionKey);
             
             eventDefinitionKey = settings.triggers[0].metaData.eventDefinitionKey;
             document.getElementById('select-entryevent-defkey').value = eventDefinitionKey;
@@ -144,6 +143,7 @@ define(function (require) {
     function save() {
         var parameters = parameterList.split(';');
         parameters = parameters.map(parameterName => `{{Event.${eventDefinitionKey}.\"${parameterName}\"}}`);
+        console.log('parameters: ', parameters);
         
         payload['arguments'].execute.inArguments = [{
             "tokens": authTokens,

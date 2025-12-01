@@ -105,10 +105,12 @@ exports.execute = function (req, res) {
             }
 
             console.log('post_save', JSON.stringify(post_save));
+            console.log('headers', JSON.stringify(headers));
             axios.post(url, post_save, { headers: headers }).then((res) => {
                 console.log(`Success send whatsapp to ${phoneNumber}`);
             }).catch((err) => {
                 console.error(`ERROR send whatsapp to ${phoneNumber}: ${err}`)
+                return res.status(400).end();
             })
 
             res.send(200, 'Execute');
