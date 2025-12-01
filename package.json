@@ -2,9 +2,6 @@
   "name": "jb-activity-template",
   "version": "1.0.0",
   "description": "Journey Builder Activity Template",
-  "engines": {
-    "node": "6.11.1"
-  },
   "scripts": {
     "start": "node app.js",
     "postinstall": "gulp default"
@@ -33,7 +30,7 @@
     "express": "^4.15.4",
     "gulp-json-modify": "^1.0.2",
     "gulp-sourcemaps": "^2.6.5",
-    "jsonwebtoken": "^9.0.2",
+    "jsonwebtoken": "^8.5.1",
     "package.json": "^0.0.0",
     "request": "^2.81.0",
     "require": "^0.4.4"
