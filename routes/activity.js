@@ -95,7 +95,7 @@ exports.execute = function (req, res) {
                 'api_access_token': `${process.env.CH_AUTHORIZATION_KEY}`
             }
             const guid_id = uuidv4();
-            const domain = cloudchat2;
+            const domain = 'cloudchat2';
             const url = 'https://'+domain+'.cloudhumans.com/api/v1/accounts/'+ account + '/conversations/create_proactive_whatsapp_conversation';
 
             const post_save = {
