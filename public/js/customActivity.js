@@ -1,6 +1,7 @@
 'use strict';
 
 define(function (require) {
+    console.log("in the custom activity ");
     var Postmonger = require('postmonger');
     var connection = new Postmonger.Session();
 
@@ -140,7 +141,7 @@ define(function (require) {
     function save() {
         var parameters = parameterList.split(';');
         parameters = parameters.map(parameterName => `{{Event.${eventDefinitionKey}.\"${parameterName}\"}}`);
-
+        
         payload['arguments'].execute.inArguments = [{
             "tokens": authTokens,
             "templateName": templateCode,
@@ -149,10 +150,11 @@ define(function (require) {
             "parameters": parameters,
             "account": whatsappAccount
         }];
-
+        console.log("in the save option "+ payload);
         payload['metaData'].isConfigured = true;
 
         // console.log('payload', JSON.stringify(payload));
+        console.log("Payload on SAVE function: "+JSON.stringify(payload));
 
         connection.trigger('updateActivity', payload);
     }

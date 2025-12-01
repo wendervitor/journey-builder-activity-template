@@ -1,18 +1,18 @@
 {
     "workflowApiVersion": "1.1",
     "metaData": {
-        "icon": "images/icon.png",
-        "iconSmall": "images/iconSmall.png",
+        "icon": "images/icon.jpg",
+        "iconSmall": "images/iconSmall.jpg",
         "category": "message"
     },
     "type": "REST",
     "lang": {
       "en-US": {
-        "name": "Send Whatsapp HSM DEV",
+        "name": "Send Whatsapp via Cloud Humans",
         "description": "HSM template submission via WhatsApp."
       },
       "pt-BR": {
-        "name": "Send Whatsapp HSM DEV",
+        "name": "Enviar Whatsapp via Cloud Humans",
         "description": "Envio de template via WhatsApp."
       }
     },
